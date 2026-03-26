@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Elite Coders | Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f3f2ef; font-family: 'Segoe UI', sans-serif; }
+        .nav-elite { background-color: #004182; border-bottom: 3px solid #ffc107; }
+        .hero-section { background: linear-gradient(45deg, #004182, #0073b1); color: white; padding: 60px 0; margin-bottom: 30px; shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .profile-card { border-radius: 12px; border: 1px solid #e0e0e0; transition: 0.3s; background: white; }
+        .profile-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .text-light-50 { color: rgba(255, 255, 255, 0.8) !important; }
+    </style>
+</head>
+<body>
+    <nav class="navbar nav-elite navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="/">
+                <span class="text-warning">{&lt;/&gt;}</span> Elite Coders
+            </a>
+            <div class="d-flex">
+                <a href="/login" class="btn btn-outline-light btn-sm me-2">Login</a>
+                <a href="/register" class="btn btn-warning btn-sm fw-bold text-dark">Join Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Code. Collaborate. Conquer.</h1>
+            <p class="lead text-light-50">India's premier community for Elite Developers.</p>
+            <a href="/register" class="btn btn-warning btn-lg fw-bold mt-3">Create Your Elite Profile</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h4 class="mb-4 text-secondary text-center">Elite Community Members</h4>
+                <div th:each="u : ${users}" class="card profile-card mb-4 shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h5 class="card-title text-primary fw-bold mb-1" th:text="${u.name}"></h5>
+                            <h6 class="card-subtitle mb-2 text-dark fw-semibold" th:text="${u.headline}"></h6>
+                            <p class="card-text text-muted" th:text="${u.bio}"></p>
+                            <a th:href="${u.githubLink}" target="_blank" class="btn btn-dark btn-sm rounded-pill px-3">View GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

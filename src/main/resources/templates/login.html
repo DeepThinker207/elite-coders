@@ -1,0 +1,19 @@
+<div class="card shadow mx-auto" style="max-width: 400px;">
+    <div class="card-body p-4">
+        <div class="text-center mb-4">
+            <a href="/" class="text-decoration-none">
+                <h1 class="fw-bold fs-2 text-primary">
+                    <span class="text-warning">{&lt;/&gt;}</span> Elite Coders
+                </h1>
+            </a>
+            <p class="text-muted small">Code. Collaborate. Conquer.</p>
+        </div>
+        
+        <div th:if="${param.registered}" class="alert alert-success small">Registration successful! Ab login karo.</div>
+        <div th:if="${error}" class="alert alert-danger small" th:text="${error}"></div>
+        
+        <form action="/loginUser" method="POST">
+            <button type="submit" class="btn btn-primary w-100 fw-bold">Login to Community</button>
+        </form>
+    </div>
+</div>
