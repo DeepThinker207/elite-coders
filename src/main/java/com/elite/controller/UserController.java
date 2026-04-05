@@ -5,9 +5,8 @@ import com.elite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
@@ -16,41 +15,95 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/")
-    public String showHomePage(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+    public String index(@RequestParam(required = false) String search, Model model) {
+        if (search != null && !search.isEmpty()) {
+            model.addAttribute("users",
+                    userRepository.findByNameContainingIgnoreCaseOrHeadlineContainingIgnoreCase(search, search));
+        } else {
+            model.addAttribute("users", userRepository.findAll());
+        }
         return "index";
     }
 
     @GetMapping("/login")
-    public String showLoginPage() {
+    public String login() {
         return "login";
     }
 
     @GetMapping("/register")
-    public String showRegistrationPage(Model model) {
+    public String register(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
     @PostMapping("/loginUser")
-    public String loginUser(@RequestParam String email, @RequestParam String password, Model model) {
+    public String doLogin(String email, String password, HttpSession session, Model model) {
         User user = userRepository.findByEmailAndPassword(email, password);
+
         if (user != null) {
-            return "redirect:/?loginSuccess=true";
-        } else {
-            model.addAttribute("error", "Bhai, ya toh email galat hai ya password. Pehle register toh kar lo!");
-            return "login";
+            session.setAttribute("loggedInUser", user);
+            return "redirect:/dashboard";
         }
+        
+        model.addAttribute("error", "Invalid email or password. Please try again.");
+        return "login";
     }
 
     @PostMapping("/save")
-    public String save(User user, Model model) {
+    public String signup(User user, Model model) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            model.addAttribute("error", "Bhai, ye email toh pehle se registered hai!");
-            model.addAttribute("user", user);
+            model.addAttribute("error", "This email is already registered!");
             return "register";
         }
         userRepository.save(user);
         return "redirect:/login?registered=true";
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("user", user);
+        return "dashboard";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+
+    @PostMapping("/updateProfile")
+    public String update(String headline, String bio, String githubLink, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        
+        if (user != null) {
+            user.setHeadline(headline);
+            user.setBio(bio);
+            user.setGithubLink(githubLink);
+            
+            userRepository.save(user);
+            session.setAttribute("loggedInUser", user);
+        }
+        return "redirect:/dashboard?updated=true";
+    }
+
+    @GetMapping("/edit-profile")
+    public String editProfile(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) return "redirect:/login";
+
+        model.addAttribute("user", user);
+        return "edit-profile";
+    }
+
+    @ModelAttribute
+    public void addGlobalAttributes(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user != null) {
+            model.addAttribute("sessionUser", user);
+        }
     }
 }

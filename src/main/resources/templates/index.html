@@ -18,32 +18,60 @@
             <a class="navbar-brand fw-bold fs-3" href="/">
                 <span class="text-warning">{&lt;/&gt;}</span> Elite Coders
             </a>
-            <div class="d-flex">
-                <a href="/login" class="btn btn-outline-light btn-sm me-2">Login</a>
-                <a href="/register" class="btn btn-warning btn-sm fw-bold text-dark">Join Community</a>
+
+            <div class="d-flex align-items-center">
+                <div th:if="${session.loggedInUser == null}">
+                    <a href="/login" class="btn btn-outline-light btn-sm me-2">Login</a>
+                    <a href="/register" class="btn btn-warning btn-sm fw-bold text-dark">Join Community</a>
+                </div>
+
+                <div th:if="${session.loggedInUser != null}" class="dropdown">
+                    <span class="text-white me-3">Welcome, <strong th:text="${session.loggedInUser.name}"></strong></span>
+                    <a href="/dashboard" class="btn btn-outline-warning btn-sm me-2">My Profile</a>
+                    <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="hero-section text-center">
         <div class="container">
-            <h1 class="display-4 fw-bold">Code. Collaborate. Conquer.</h1>
-            <p class="lead text-light-50">India's premier community for Elite Developers.</p>
+            <h1 class="display-6 fw-bold">Connect with India's Elite Developers.</h1>
+            <p class="lead text-light-50">Build your profile, showcase your projects, and collaborate with the community.</p>
             <a href="/register" class="btn btn-warning btn-lg fw-bold mt-3">Create Your Elite Profile</a>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container mb-4">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h4 class="mb-4 text-secondary text-center">Elite Community Members</h4>
-                <div th:each="u : ${users}" class="card profile-card mb-4 shadow-sm">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="flex-grow-1">
-                            <h5 class="card-title text-primary fw-bold mb-1" th:text="${u.name}"></h5>
-                            <h6 class="card-subtitle mb-2 text-dark fw-semibold" th:text="${u.headline}"></h6>
-                            <p class="card-text text-muted" th:text="${u.bio}"></p>
-                            <a th:href="${u.githubLink}" target="_blank" class="btn btn-dark btn-sm rounded-pill px-3">View GitHub</a>
+            <div class="col-md-6">
+                <form action="/" method="get" class="d-flex shadow-sm rounded-pill overflow-hidden">
+                    <input type="text" name="search" class="form-control border-0 px-4" 
+                       placeholder="Search by name or skills (e.g. Java, Python...)" 
+                       th:value="${param.search}">
+                    <button type="submit" class="btn btn-primary px-4">Search</button>
+                </form>
+                <div th:if="${param.search}" class="text-center mt-2">
+                    <a href="/" class="small text-decoration-none text-muted">Clear Search</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <h3 class="fw-bold mb-4 text-center">Discover Elite Developers</h3>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4" th:each="u : ${users}">
+                <div class="card profile-card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="fw-bold text-primary mb-1" th:text="${u.name}">Developer Name</h5>
+                        <p class="small fw-bold text-secondary mb-2" th:text="${u.headline}">Software Engineer</p>
+                        <p class="card-text small text-muted" th:text="${u.bio}">User bio goes here...</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a th:href="${u.githubLink}" target="_blank" class="btn btn-outline-dark btn-sm rounded-pill px-3">GitHub</a>
+                            <span class="badge bg-light text-dark border">Elite Member</span>
                         </div>
                     </div>
                 </div>
