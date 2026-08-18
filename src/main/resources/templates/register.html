@@ -1,55 +1,74 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Join Elite Programmers</title>
+    <meta charset="UTF-8">
+    <title>Join Elite Coders</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f3f2ef; display: flex; align-items: center; min-height: 100vh; }
-        .register-card { max-width: 500px; width: 100%; margin: auto; border-radius: 15px; }
+        body { background-color: #f6f8fa; font-family: 'Inter', sans-serif; color: #0d1117; padding: 40px 0; }
+        .brand-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.8rem; color: #0d1117; text-decoration: none; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .brand-icon { color: #0969da; background: rgba(9, 105, 218, 0.15); width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 1.2rem; }
+        .register-card { background: #fff; border: 1px solid #d0d7de; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); padding: 40px; max-width: 600px; margin: auto; }
+        .form-control { border-radius: 8px; padding: 12px 15px; border: 1px solid #d0d7de; font-size: 0.95rem; }
+        .form-control:focus { border-color: #0969da; box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15); }
+        .btn-primary { background-color: #0969da; border: none; font-weight: 600; padding: 12px; border-radius: 8px; }
+        .btn-primary:hover { background-color: #0552a5; }
     </style>
 </head>
 <body>
-    <div class="card register-card shadow p-4 bg-white">
-        <h2 class="text-center mb-4 text-primary">Create Your Profile</h2>
-        <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
-        <div class="text-center mb-4">
-            <a href="/" class="text-decoration-none">
-                <h1 class="fw-bold fs-2 text-primary">
-                    <span class="text-warning">{&lt;/&gt;}</span> Elite Coders
-                </h1>
-            </a>
-        <p class="text-muted small">Code. Collaborate. Conquer.</p>
+
+<div class="container">
+    <a href="/" class="brand-logo">
+        <span class="brand-icon"><i class="fa-solid fa-code"></i></span>
+        Elite<span style="color:#0969da;">Coders</span>
+    </a>
+
+    <div class="register-card">
+        <h3 class="text-center fw-bold mb-1" style="font-family: 'Space Grotesk', sans-serif;">Create Your Profile</h3>
+        <p class="text-center text-muted small mb-4">Join the network of top engineering talent.</p>
+
+        <div th:if="${error}" class="alert alert-danger p-3 small rounded-3 fw-medium">
+            <i class="fa-solid fa-circle-exclamation me-1"></i> <span th:text="${error}"></span>
         </div>
-        <form th:action="@{/save}" th:object="${user}" method="POST">
-            <div class="mb-3">
-                <label class="form-label">Full Name</label>
-                <input type="text" th:field="*{name}" class="form-control" placeholder="Deepesh Singh" required>
+
+        <form th:action="@{/register}" th:object="${user}" method="POST">
+            <div class="row g-3">
+                <div class="col-md-6 mb-2">
+                    <label class="form-label small fw-bold text-secondary">Full Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" placeholder="Deepesh Singh" required>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label class="form-label small fw-bold text-secondary">Email Address</label>
+                    <input type="email" th:field="*{email}" class="form-control" placeholder="hello@example.com" required>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <label class="form-label small fw-bold text-secondary">Create Password</label>
+                    <input type="password" th:field="*{password}" class="form-control" placeholder="Minimum 6 characters" required>
+                </div>
+                <div class="col-md-12 mb-2">
+                    <label class="form-label small fw-bold text-secondary">Professional Headline</label>
+                    <input type="text" th:field="*{headline}" class="form-control" placeholder="e.g. Backend Developer | Java & Python Enthusiast">
+                </div>
+                <div class="col-md-12 mb-2">
+                    <label class="form-label small fw-bold text-secondary">GitHub Profile URL</label>
+                    <input type="url" th:field="*{githubLink}" class="form-control" placeholder="https://github.com/your-username">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label small fw-bold text-secondary">Short Bio</label>
+                    <textarea th:field="*{bio}" class="form-control" rows="3" placeholder="Tell the community about your skills and goals..."></textarea>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Email address</label>
-                <input type="email" th:field="*{email}" class="form-control" placeholder="name@example.com" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Create Password</label>
-                <input type="password" th:field="*{password}" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Headline</label>
-                <input type="text" th:field="*{headline}" class="form-control" placeholder="Java Developer | Spring Boot Enthusiast">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">GitHub URL</label>
-                <input type="url" th:field="*{githubLink}" class="form-control" placeholder="https://github.com/your-username">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Bio</label>
-                <textarea th:field="*{bio}" class="form-control" rows="3" placeholder="Tell the world about your skills..."></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Register as Elite</button>
-            <div class="text-center mt-3">
-                <a href="/" class="text-decoration-none text-muted small">Cancel and go back</a>
-            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-2 shadow-sm">Join the Elite</button>
         </form>
     </div>
+
+    <div class="text-center mt-4 mx-auto p-3 border rounded bg-white shadow-sm" style="border-color: #d0d7de !important; max-width: 600px;">
+        <p class="small mb-0">Already have an account? <a href="/login" class="fw-bold text-decoration-none" style="color:#0969da;">Sign in</a></p>
+    </div>
+</div>
+
 </body>
 </html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${dev.name + ' | Elite Coders'}">Developer Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #0969da; --dark: #0a0e17; --page-bg: #f6f8fa; }
+        body { background-color: var(--page-bg); font-family: 'Inter', sans-serif; color: #0d1117; }
+        .nav-elite { background-color: rgba(10, 14, 23, 0.95); padding: 14px 0; }
+        .profile-header-bg { background: linear-gradient(135deg, #0969da, #0552a5); height: 160px; border-radius: 12px 12px 0 0; }
+        .dev-avatar { width: 130px; height: 130px; border: 5px solid white; background-color: white; color: var(--primary); font-size: 3.5rem; display: flex; justify-content: center; align-items: center; margin-top: -65px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 50%; font-family: 'Space Grotesk', sans-serif; font-weight: bold; }
+        .card-custom { background: white; border: 1px solid #d0d7de; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark nav-elite sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-white text-decoration-none" href="/">
+            <i class="fa-solid fa-code text-primary me-2"></i>Elite<span style="color:#58a6ff;">Coders</span>
+        </a>
+        <div class="ms-auto d-flex">
+            <a href="/" class="btn btn-outline-light btn-sm me-2">Back to Network</a>
+            <a th:if="${sessionUser == null}" href="/login" class="btn btn-primary btn-sm">Sign in</a>
+            <a th:if="${sessionUser != null}" href="/dashboard" class="btn btn-primary btn-sm">My Dashboard</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card-custom mb-4 pb-4">
+                <div class="profile-header-bg"></div>
+                <div class="px-5 text-center">
+                    <div class="dev-avatar mx-auto" th:text="${#strings.substring(dev.name,0,1)}">D</div>
+                    <h2 class="fw-bold mt-3 mb-1" style="font-family: 'Space Grotesk', sans-serif;" th:text="${dev.name}">Developer Name</h2>
+                    <p class="text-secondary fw-semibold mb-3" th:text="${dev.headline}">Headline</p>
+                    <p class="text-muted mb-4" th:text="${dev.bio}">Bio goes here...</p>
+
+                    <a th:if="${not #strings.isEmpty(dev.githubLink)}" th:href="${dev.githubLink}" target="_blank" class="btn btn-dark fw-bold px-4 rounded-pill shadow-sm">
+                        <i class="fa-brands fa-github me-2"></i> View GitHub
+                    </a>
+                </div>
+            </div>
+
+            <!-- Public Projects Section -->
+            <div class="card-custom p-4 mb-4">
+                <h5 class="fw-bold mb-4 border-bottom pb-2"><i class="fa-solid fa-laptop-code text-primary me-2"></i> Portfolio Projects</h5>
+                <div th:if="${#lists.isEmpty(dev.projects)}" class="text-muted small">This developer hasn't added any projects yet.</div>
+
+                <div th:each="project : ${dev.projects}" class="border rounded p-3 mb-3 bg-light">
+                    <h6 class="fw-bold text-dark mb-1">
+                        <span th:text="${project.title}">Project Title</span>
+                        <a th:if="${not #strings.isEmpty(project.projectUrl)}" th:href="${project.projectUrl}" target="_blank" class="badge bg-primary float-end text-decoration-none">View Project</a>
+                    </h6>
+                    <p class="small text-muted mb-2" th:text="${project.description}">Project Description</p>
+                    <span class="badge bg-secondary" th:text="${project.techStack}">Tech Stack</span>
+                </div>
+            </div>
+
+            <!-- Public Education Section -->
+            <div class="card-custom p-4">
+                <h5 class="fw-bold mb-4 border-bottom pb-2"><i class="fa-solid fa-graduation-cap text-primary me-2"></i> Education</h5>
+                <div th:if="${#lists.isEmpty(dev.educations)}" class="text-muted small">No education details available.</div>
+
+                <div th:each="edu : ${dev.educations}" class="border-bottom pb-3 mb-3">
+                    <h6 class="fw-bold text-dark mb-1" th:text="${edu.degree}">Degree</h6>
+                    <p class="small text-muted mb-1" th:text="${edu.institution}">Institution</p>
+                    <p class="small text-muted mb-0"><i class="fa-regular fa-calendar me-1"></i> <span th:text="${edu.startYear + ' - ' + edu.endYear}">Year</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
+
+</body>
+</html>

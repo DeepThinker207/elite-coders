@@ -1,82 +1,584 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Elite Coders | Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Coders | The Developer Network</title>
+    <meta name="description" content="Elite Coders is the professional network built for developers — showcase your work, discover elite engineering talent, and connect with coders who share your standards.">
+    <meta name="theme-color" content="#0a0e17">
+    <meta property="og:title" content="Elite Coders | The Developer Network">
+    <meta property="og:description" content="Discover, collaborate, and network with elite developers from around the world.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body { background-color: #f3f2ef; font-family: 'Segoe UI', sans-serif; }
-        .nav-elite { background-color: #004182; border-bottom: 3px solid #ffc107; }
-        .hero-section { background: linear-gradient(45deg, #004182, #0073b1); color: white; padding: 60px 0; margin-bottom: 30px; shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .profile-card { border-radius: 12px; border: 1px solid #e0e0e0; transition: 0.3s; background: white; }
-        .profile-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .text-light-50 { color: rgba(255, 255, 255, 0.8) !important; }
+        :root {
+            --primary: #0969da;
+            --primary-dark: #0552a5;
+            --primary-light: #e7f2fe;
+            --dark: #0a0e17;
+            --dark-2: #121826;
+            --dark-3: #16213a;
+            --border-dark: #263047;
+            --page-bg: #f6f8fa;
+            --card-bg: #ffffff;
+            --text-primary: #0d1117;
+            --text-secondary: #57606a;
+            --text-muted: #8b949e;
+            --border: #d0d7de;
+            --success: #1a7f37;
+            --success-bg: #dafbe1;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+            --shadow-md: 0 10px 25px rgba(15, 23, 42, 0.09);
+            --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.16);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--page-bg);
+            font-family: 'Inter', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6,
+        .hero-title, .section-heading, .navbar-brand, .value-title, .cta-title {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+        }
+
+        a { text-decoration: none; }
+        a:focus-visible, button:focus-visible, input:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* ---------- Navbar ---------- */
+        .navbar-elite {
+            background-color: rgba(10, 14, 23, 0.98); /* Thoda dark kiya hai */
+            /* backdrop-filter hata diya gaya hai dropdown bug fix karne ke liye */
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: box-shadow 0.2s ease;
+        }
+        .navbar-elite.is-scrolled { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); }
+        .navbar-elite .navbar-brand {
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            color: #fff !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-elite .navbar-brand .brand-icon {
+            color: var(--primary);
+            background: rgba(9, 105, 218, 0.15);
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+        .brand-accent { color: #58a6ff; }
+        .navbar-elite .nav-link {
+            color: #c9d1d9 !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .navbar-elite .nav-link:hover { color: #fff !important; background-color: rgba(255, 255, 255, 0.06); }
+        .navbar-elite .nav-link.active { color: #fff !important; background-color: rgba(9, 105, 218, 0.16); }
+        .navbar-elite .btn-outline-light { border-color: #2d3548; color: #c9d1d9; font-weight: 600; }
+        .navbar-elite .btn-outline-light:hover { background-color: #1b2436; border-color: #4b5468; color: #fff; }
+        .btn-primary-elite { background-color: var(--primary) !important; border: none !important; font-weight: 600; box-shadow: 0 2px 8px rgba(9, 105, 218, 0.35); }
+        .btn-primary-elite:hover { background-color: var(--primary-dark) !important; }
+        .navbar-elite .dropdown-menu { background-color: var(--dark-2); border: 1px solid var(--border-dark); }
+        .navbar-elite .dropdown-item { color: #c9d1d9; font-size: 0.9rem; }
+        .navbar-elite .dropdown-item:hover { background-color: #202a3d; color: #fff; }
+        .navbar-elite .dropdown-divider { border-color: var(--border-dark); }
+        .avatar-nav {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff; display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; margin-right: 8px;
+        }
+
+        /* ---------- Hero ---------- */
+        .hero-section {
+            background: linear-gradient(160deg, var(--dark) 0%, var(--dark-2) 45%, var(--dark-3) 100%);
+            color: #fff;
+            padding: 90px 0 90px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: "";
+            position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+            background-size: 26px 26px;
+            -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+        }
+        .hero-section::after {
+            content: "";
+            position: absolute; top: -20%; right: -8%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(9, 105, 218, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-content { position: relative; z-index: 2; text-align: center; }
+        .hero-kicker {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+            color: #58a6ff; background: rgba(9, 105, 218, 0.12); border: 1px solid rgba(88, 166, 255, 0.25);
+            padding: 6px 16px; border-radius: 20px; margin-bottom: 22px;
+        }
+        .hero-title {
+            font-size: clamp(2.1rem, 4.2vw, 3.4rem);
+            font-weight: 700; letter-spacing: -1px; margin-bottom: 18px; line-height: 1.15;
+        }
+        .hero-title span { color: #58a6ff; }
+        .hero-subtitle { font-size: 1.1rem; color: #9aa4b2; max-width: 620px; margin: 0 auto 36px; line-height: 1.6; }
+        .hero-stats { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 46px; }
+        .hero-stat {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 20px; border-radius: 12px;
+        }
+        .hero-stat .stat-icon {
+            width: 32px; height: 32px; border-radius: 8px; background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;
+        }
+        .hero-stat .number { font-size: 1.25rem; font-weight: 700; color: #fff; line-height: 1; font-family: 'Space Grotesk', sans-serif; }
+        .hero-stat .label { font-size: 0.78rem; color: #8b949e; }
+
+        /* ---------- Search Card ---------- */
+        .search-card {
+            background: #fff; border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            padding: 14px; max-width: 720px; margin: 0 auto; position: relative; z-index: 10;
+        }
+        .search-form { display: flex; align-items: stretch; gap: 10px; }
+        .search-input-wrap {
+            flex: 1; display: flex; align-items: center; background: var(--page-bg);
+            border: 1px solid transparent; border-radius: var(--radius-sm); padding: 0 16px; transition: all 0.2s;
+        }
+        .search-input-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12); background: #fff; }
+        .search-input-wrap i { color: var(--text-muted); margin-right: 10px; font-size: 0.9rem; }
+        .search-input-wrap .form-control { border: none; background: transparent; padding: 14px 0; box-shadow: none !important; color: var(--text-primary); }
+        .search-form .btn-search {
+            border-radius: var(--radius-sm); padding: 0 30px; font-weight: 600;
+            background-color: var(--primary); border: none; color: #fff; transition: background-color 0.2s; white-space: nowrap;
+        }
+        .search-form .btn-search:hover { background-color: var(--primary-dark); }
+        .search-tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; padding: 0 8px 4px; }
+        .search-tags .tag-label { color: #57606a; font-size: 0.83rem; font-weight: 600; }
+        .search-tags .tag-link {
+            background-color: var(--page-bg); color: var(--text-primary); padding: 5px 14px; border-radius: 20px;
+            font-size: 0.83rem; border: 1px solid var(--border); transition: all 0.2s; font-weight: 500;
+        }
+        .search-tags .tag-link:hover { background-color: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
+
+        /* ---------- Value Props ---------- */
+        .value-props-section { background: #fff; padding: 64px 0 24px; }
+        .value-card { text-align: center; padding: 28px 20px; }
+        .value-icon {
+            width: 56px; height: 56px; border-radius: 14px; margin: 0 auto 18px;
+            display: inline-flex; align-items: center; justify-content: center; font-size: 1.3rem;
+        }
+        .value-icon.blue { background: var(--primary-light); color: var(--primary); }
+        .value-icon.green { background: var(--success-bg); color: var(--success); }
+        .value-icon.purple { background: #f0e7fe; color: #6d28d9; }
+        .value-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .value-text { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; max-width: 320px; margin: 0 auto; }
+
+        /* ---------- Developers Section ---------- */
+        .developers-section { padding: 24px 0 70px; }
+        .section-heading { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+        .section-subheading { color: var(--text-secondary); font-size: 0.98rem; margin-bottom: 0; }
+        .results-count { color: var(--text-muted); font-size: 0.88rem; font-weight: 500; margin: 4px 0 0; }
+
+        .dev-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-md);
+            overflow: hidden; transition: all 0.25s ease; height: 100%; display: flex; flex-direction: column;
+            box-shadow: var(--shadow-sm);
+        }
+        .dev-card:hover { box-shadow: var(--shadow-md); transform: translateY(-5px); border-color: #b1bac4; }
+
+        .dev-card-banner {
+            height: 64px;
+            background-color: #eef2ff;
+            background-image:
+                radial-gradient(circle, rgba(9, 105, 218, 0.15) 1px, transparent 1px),
+                linear-gradient(135deg, #eef2ff, #dbe4ff);
+            background-size: 14px 14px, 100% 100%;
+            position: relative;
+        }
+        .dev-card-banner::after {
+            content: "";
+            position: absolute; bottom: 0; left: 0; right: 0; height: 24px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.7));
+        }
+
+        .dev-avatar-container { margin-top: -32px; text-align: center; position: relative; z-index: 2; }
+        .dev-avatar-container a { text-decoration: none; display: inline-block; }
+        .dev-avatar {
+            width: 64px; height: 64px; border-radius: 50%; border: 4px solid #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: inline-flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; font-weight: 700; color: #fff; font-family: 'Space Grotesk', sans-serif;
+        }
+        .avatar-grad-0 { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .avatar-grad-1 { background: linear-gradient(135deg, #14b8a6, #0f766e); }
+        .avatar-grad-2 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .avatar-grad-3 { background: linear-gradient(135deg, #f59e0b, #b45309); }
+        .avatar-grad-4 { background: linear-gradient(135deg, #f43f5e, #be123c); }
+        .avatar-grad-5 { background: linear-gradient(135deg, #10b981, #047857); }
+
+        .dev-card-body { padding: 14px 20px 20px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
+        .dev-name { font-weight: 700; font-size: 1.05rem; margin-bottom: 3px; }
+        .dev-name-link { color: var(--text-primary); text-decoration: none; }
+        .dev-name-link:hover { color: var(--primary); text-decoration: underline; }
+        .dev-headline { font-size: 0.86rem; color: var(--text-secondary); font-weight: 500; margin-bottom: 10px; }
+        .dev-bio {
+            font-size: 0.84rem; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1; margin-bottom: 16px; line-height: 1.5;
+        }
+        .dev-card-footer { border-top: 1px solid var(--border); padding-top: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .badge-elite {
+            background-color: var(--success-bg); color: var(--success); padding: 4px 11px; border-radius: 20px;
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 0.4px; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .btn-github {
+            background-color: #24292f; color: #fff; border: none; padding: 5px 14px; border-radius: 20px;
+            font-size: 0.78rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+            transition: background-color 0.2s;
+        }
+        .btn-github:hover { background-color: #000; color: #fff; }
+
+        /* ---------- CTA ---------- */
+        .cta-section {
+            background: linear-gradient(120deg, #0b3d8c 0%, #0969da 100%);
+            color: #fff; padding: 60px 0; text-align: center; position: relative; overflow: hidden;
+        }
+        .cta-section::before {
+            content: ""; position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 22px 22px;
+        }
+        .cta-content { position: relative; z-index: 2; }
+        .cta-kicker { font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #bcdcff; margin-bottom: 12px; }
+        .cta-title { font-size: 1.9rem; font-weight: 700; margin-bottom: 10px; }
+        .cta-text { color: #d6e7fb; max-width: 480px; margin: 0 auto 26px; }
+        .btn-cta {
+            background: #fff; color: var(--primary-dark); border: none; padding: 13px 32px; border-radius: 10px;
+            font-weight: 700; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-cta:hover { background: #f0f6ff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); color: var(--primary-dark); }
+
+        /* ---------- Empty State ---------- */
+        .empty-state { text-align: center; padding: 70px 20px; background: #fff; border: 1px dashed var(--border); border-radius: var(--radius-md); }
+        .empty-state i { font-size: 3.2rem; color: #d0d7de; margin-bottom: 18px; }
+        .empty-state h4 { color: var(--text-secondary); font-weight: 700; }
+        .empty-state p { color: var(--text-muted); margin-bottom: 4px; }
+
+        /* ---------- Footer ---------- */
+        .footer { background-color: var(--dark); color: #8b949e; padding: 50px 0 24px; }
+        .footer h5 { color: #fff; font-weight: 700; margin-bottom: 16px; font-size: 0.95rem; }
+        .footer p { font-size: 0.88rem; line-height: 1.6; }
+        .footer a { color: #8b949e; text-decoration: none; display: block; margin-bottom: 9px; font-size: 0.88rem; transition: color 0.2s; }
+        .footer a:hover { color: #fff; }
+        .footer .social-icons a {
+            display: inline-flex; width: 34px; height: 34px; align-items: center; justify-content: center;
+            margin-right: 10px; margin-bottom: 0; font-size: 1rem; color: #c9d1d9; background: rgba(255, 255, 255, 0.06);
+            border-radius: 8px; transition: all 0.2s;
+        }
+        .footer .social-icons a:hover { background: var(--primary); color: #fff; }
+        .footer-bottom { border-top: 1px solid #232b3d; padding-top: 22px; margin-top: 34px; font-size: 0.83rem; }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 768px) {
+            .hero-section { padding: 60px 0 60px; }
+            .hero-stats { gap: 10px; }
+            .hero-stat { padding: 8px 14px; }
+            .search-form { flex-direction: column; }
+            .search-form .btn-search { padding: 14px; width: 100%; justify-content: center; display: flex; }
+            .value-props-section { padding-top: 50px; }
+            .cta-title { font-size: 1.5rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .dev-card, .btn-cta, .tag-link, .navbar-elite { transition: none !important; }
+            .dev-card:hover, .btn-cta:hover { transform: none !important; }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar nav-elite navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="/">
-                <span class="text-warning">{&lt;/&gt;}</span> Elite Coders
-            </a>
 
-            <div class="d-flex align-items-center">
-                <div th:if="${session.loggedInUser == null}">
-                    <a href="/login" class="btn btn-outline-light btn-sm me-2">Login</a>
-                    <a href="/register" class="btn btn-warning btn-sm fw-bold text-dark">Join Community</a>
-                </div>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-elite sticky-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <span class="brand-icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
+            Elite<span class="brand-accent">Coders</span>
+        </a>
 
-                <div th:if="${session.loggedInUser != null}" class="dropdown">
-                    <span class="text-white me-3">Welcome, <strong th:text="${session.loggedInUser.name}"></strong></span>
-                    <a href="/dashboard" class="btn btn-outline-warning btn-sm me-2">My Profile</a>
-                    <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="hero-section text-center">
-        <div class="container">
-            <h1 class="display-6 fw-bold">Connect with India's Elite Developers.</h1>
-            <p class="lead text-light-50">Build your profile, showcase your projects, and collaborate with the community.</p>
-            <a href="/register" class="btn btn-warning btn-lg fw-bold mt-3">Create Your Elite Profile</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link active" href="/">Discover</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="alert('Explore feature is coming soon!')">Explore</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="alert('Projects board is coming soon!')">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="alert('Community forums are coming soon!')">Community</a></li>
+            </ul>
+
+            <ul class="navbar-nav align-items-center mt-3 mt-lg-0">
+                <li class="nav-item d-flex gap-2" th:if="${sessionUser == null}">
+                    <a href="/login" class="btn btn-outline-light btn-sm fw-bold px-3">Sign in</a>
+                    <a href="/register" class="btn btn-primary-elite btn-sm fw-bold px-3 shadow-sm">Join the Elite</a>
+                </li>
+
+                <li class="nav-item dropdown" th:if="${sessionUser != null}">
+                    <button class="btn btn-link text-white text-decoration-none dropdown-toggle fw-bold d-flex align-items-center p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border: none; outline: none; box-shadow: none;">
+                        <span class="avatar-nav" th:text="${#strings.substring(sessionUser.name,0,1)}">D</span>
+                        <span th:text="${sessionUser.name}">User</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                        <li><a class="dropdown-item py-2" href="/dashboard"><i class="fa-solid fa-user me-2 text-muted" aria-hidden="true"></i> My Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="/edit-profile"><i class="fa-solid fa-gear me-2 text-muted" aria-hidden="true"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="/logout"><i class="fa-solid fa-arrow-right-from-bracket me-2" aria-hidden="true"></i> Sign out</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
+</nav>
 
-    <div class="container mb-4">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <form action="/" method="get" class="d-flex shadow-sm rounded-pill overflow-hidden">
-                    <input type="text" name="search" class="form-control border-0 px-4" 
-                       placeholder="Search by name or skills (e.g. Java, Python...)" 
-                       th:value="${param.search}">
-                    <button type="submit" class="btn btn-primary px-4">Search</button>
+<main>
+    <!-- Hero -->
+    <section class="hero-section">
+        <div class="container hero-content">
+            <span class="hero-kicker"><i class="fa-solid fa-bolt" aria-hidden="true"></i>The Developer Network</span>
+            <h1 class="hero-title">Where <span>Elite Coders</span> Connect, Collaborate &amp; Grow</h1>
+            <p class="hero-subtitle">Showcase your work, discover elite engineering talent, and build real connections with developers who share your standards.</p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="stat-icon"><i class="fa-solid fa-users" aria-hidden="true"></i></span>
+                    <span class="number">10,000+</span><span class="label">Developers</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="stat-icon"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i></span>
+                    <span class="number">500+</span><span class="label">Skills</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="stat-icon"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i></span>
+                    <span class="number">2,000+</span><span class="label">Projects</span>
+                </div>
+            </div>
+
+            <div class="search-card">
+                <form action="/" method="get" class="search-form">
+                    <div class="search-input-wrap">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <input type="text" name="search" class="form-control" aria-label="Search developers"
+                               placeholder="Search by name, skill (Java, Python), or headline..." th:value="${param.search}">
+                    </div>
+                    <button type="submit" class="btn btn-search">Search</button>
                 </form>
+                <div class="search-tags">
+                    <span class="tag-label">Popular:</span>
+                    <a href="/?search=Java" class="tag-link">Java</a>
+                    <a href="/?search=Python" class="tag-link">Python</a>
+                    <a href="/?search=React" class="tag-link">React</a>
+                    <a href="/?search=Node.js" class="tag-link">Node.js</a>
+                    <a href="/?search=Machine Learning" class="tag-link">Machine Learning</a>
+                    <a href="/?search=DevOps" class="tag-link">DevOps</a>
+                </div>
                 <div th:if="${param.search}" class="text-center mt-2">
-                    <a href="/" class="small text-decoration-none text-muted">Clear Search</a>
+                    <a href="/" class="small text-decoration-none text-muted"><i class="fa-solid fa-xmark me-1" aria-hidden="true"></i>Clear search</a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="container my-5">
-        <h3 class="fw-bold mb-4 text-center">Discover Elite Developers</h3>
-        
-        <div class="row">
-            <div class="col-md-4 mb-4" th:each="u : ${users}">
-                <div class="card profile-card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="fw-bold text-primary mb-1" th:text="${u.name}">Developer Name</h5>
-                        <p class="small fw-bold text-secondary mb-2" th:text="${u.headline}">Software Engineer</p>
-                        <p class="card-text small text-muted" th:text="${u.bio}">User bio goes here...</p>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a th:href="${u.githubLink}" target="_blank" class="btn btn-outline-dark btn-sm rounded-pill px-3">GitHub</a>
-                            <span class="badge bg-light text-dark border">Elite Member</span>
-                        </div>
+    <!-- Value Props -->
+    <section class="value-props-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="value-card">
+                        <div class="value-icon blue"><i class="fa-solid fa-id-badge" aria-hidden="true"></i></div>
+                        <h3 class="value-title">Craft Your Profile</h3>
+                        <p class="value-text">Turn your skills, projects, and GitHub activity into a profile that gets you noticed.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="value-card">
+                        <div class="value-icon green"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></div>
+                        <h3 class="value-title">Discover Elite Talent</h3>
+                        <p class="value-text">Search thousands of developers by name, skill, or headline to find your next collaborator.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="value-card">
+                        <div class="value-icon purple"><i class="fa-solid fa-handshake" aria-hidden="true"></i></div>
+                        <h3 class="value-title">Build Real Connections</h3>
+                        <p class="value-text">Network with engineers who share your stack, your goals, and your standards.</p>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Developers Grid -->
+    <section class="developers-section">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+                <div>
+                    <h2 class="section-heading" th:if="${param.search}">Search results for "<span th:text="${param.search}">query</span>"</h2>
+                    <h2 class="section-heading" th:if="${!param.search}">Featured Developers</h2>
+                    <p class="section-subheading" th:if="${!param.search}">Meet the elite minds shaping the future of technology.</p>
+                    <p class="results-count" th:if="${param.search}" th:text="|${#lists.size(users)} developer(s) found|">0 developers found</p>
+                </div>
+                <div th:if="${!param.search}">
+                    <a href="/register" class="btn btn-outline-primary btn-sm fw-bold">Become a Member</a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Generate a card for each user -->
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12" th:each="u, iStat : ${users}">
+                    <div class="dev-card">
+                        <div class="dev-card-banner"></div>
+
+                        <div class="dev-avatar-container">
+                            <a th:href="@{/developer/{id}(id=${u.id})}" aria-hidden="true" tabindex="-1">
+                                <div class="dev-avatar" th:classappend="|avatar-grad-${iStat.index % 6}|" th:text="${#strings.substring(u.name,0,1)}">D</div>
+                            </a>
+                        </div>
+
+                        <div class="dev-card-body">
+                            <h5 class="dev-name">
+                                <a th:href="@{/developer/{id}(id=${u.id})}" class="dev-name-link" th:text="${u.name}">Developer Name</a>
+                            </h5>
+                            <p class="dev-headline" th:text="${u.headline}">Software Engineer</p>
+                            <p class="dev-bio" th:text="${u.bio}">User bio goes here...</p>
+
+                            <div class="dev-card-footer mt-auto">
+                                <span class="badge-elite"><i class="fa-solid fa-circle-check" aria-hidden="true"></i>ELITE</span>
+                                <a th:if="${not #strings.isEmpty(u.githubLink)}" th:href="${u.githubLink}" target="_blank" rel="noopener noreferrer" class="btn-github">
+                                    <i class="fa-brands fa-github" aria-hidden="true"></i>GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- If no users found -->
+                <div th:if="${#lists.isEmpty(users)}" class="col-12">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-users-slash" aria-hidden="true"></i>
+                        <h4>No developers found</h4>
+                        <p>Try searching with different skills or names.</p>
+                        <a href="/register" class="btn btn-primary-elite btn-sm fw-bold mt-3">Join and be the first</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" th:if="${sessionUser == null}">
+        <div class="container cta-content">
+            <div class="cta-kicker">Join the Community</div>
+            <h2 class="cta-title">Ready to join the elite?</h2>
+            <p class="cta-text">Create your profile in minutes and start connecting with developers who build at the highest level.</p>
+            <a href="/register" class="btn-cta">Join the Elite <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5><i class="fa-solid fa-code me-2 text-primary" aria-hidden="true"></i>Elite Coders</h5>
+                <p>A community platform for elite developers to connect, collaborate, and showcase their skills.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fa-brands fa-discord" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5>Platform</h5>
+                <a href="/">Browse Developers</a>
+                <a href="#">Projects</a>
+                <a href="#">Skills</a>
+                <a href="#">Jobs</a>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5>Community</h5>
+                <a href="#">Forums</a>
+                <a href="#">Events</a>
+                <a href="#">Blog</a>
+                <a href="#">Code of Conduct</a>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5>Support</h5>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5>Account</h5>
+                <a href="/login">Sign In</a>
+                <a href="/register">Join Elite</a>
+                <a href="/dashboard">My Profile</a>
+                <a href="/edit-profile">Settings</a>
+            </div>
+        </div>
+        <div class="footer-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span>&copy; 2026 Elite Coders. All rights reserved.</span>
+            <span>Made with <i class="fa-solid fa-heart text-danger" aria-hidden="true"></i> for the developer community.</span>
+        </div>
     </div>
+</footer>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script>
+    // Subtle elevation on the navbar once the page is scrolled
+    (function () {
+        var nav = document.getElementById('mainNav');
+        if (!nav) return;
+        var onScroll = function () {
+            if (window.scrollY > 8) { nav.classList.add('is-scrolled'); }
+            else { nav.classList.remove('is-scrolled'); }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+</script>
 </body>
 </html>
